@@ -45,12 +45,19 @@ const Checkbox = () => {
 
     const handleCheckBoxChange = (e) => {
         setCheckBoxes((prev) => {
-            if (e.target.value === 'all')
+            if (e.target.value === 'all' && e.target.checked)
                 return {
                     all: true,
                     coding: true,
                     music: true,
                     'reading books': true,
+                }
+            if (e.target.value === 'all' && !e.target.checked)
+                return {
+                    all: false,
+                    coding: false,
+                    music: false,
+                    'reading books': false,
                 }
             if (!e.target.checked)
                 return {
