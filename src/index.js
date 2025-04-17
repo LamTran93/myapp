@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import DayTwo from './components/dayTwo'
 import DayThree from './components/dayThree'
+import DayFour from './components/dayFour'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -15,7 +16,7 @@ root.render(
             <Route path="/" element={<App />}>
                 <Route path="homework/day2" element={<DayTwo />}></Route>
                 <Route path="homework/day3" element={<DayThree />}></Route>
-                <Route path="homework/day4" element={<DayTwo />}></Route>
+                <Route path="homework/day4" element={<DayFour />}></Route>
             </Route>
         </Routes>
     </BrowserRouter>
