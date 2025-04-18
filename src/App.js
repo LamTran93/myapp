@@ -4,7 +4,7 @@ import { Link, Outlet } from 'react-router'
 function App() {
     return (
         <div className="App">
-            <Navbar expand="lg" className="bg-body-tertiary">
+            <Navbar expand="lg" bg='info'>
                 <Container>
                     <Navbar.Brand as={Link} to="/">
                         Home

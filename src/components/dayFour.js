@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Container } from 'react-bootstrap'
 
 const DayFour = () => {
@@ -10,16 +10,12 @@ const DayFour = () => {
         repassword: false,
         checkbox: false,
     })
-    const [activeSubmit, setActiveSubmit] = useState(false)
 
     const handleFieldChange = (e) => {
         setFormData((prev) => {
             return { ...prev, [e.target.name]: e.target.value }
         })
     }
-
-    console.log(formData)
-    console.log(validity)
 
     useEffect(() => {
         if (formData.username && /^[A-Za-z0-9]{4,}$/.test(formData.username))
@@ -58,14 +54,19 @@ const DayFour = () => {
                 return { ...prev, repassword: false }
             })
 
-        setValidity((prev) => {
-            return { ...prev, checkbox: formData.checkbox }
-        })
+        if (formData.checkbox) {
+            setValidity((prev) => {
+                return { ...prev, checkbox: true }
+            })
+        } else {
+            setValidity((prev) => {
+                return { ...prev, checkbox: false }
+            })
+        }
     }, [formData])
 
-    useEffect(() => {
-        if (Object.values(validity).includes(false)) setActiveSubmit(false)
-        else setActiveSubmit(true)
+    const activeSubmit = useMemo(() => {
+        return !Object.values(validity).includes(false)
     }, [validity])
 
     return (
@@ -79,6 +80,11 @@ const DayFour = () => {
                     value={formData.username}
                     onChange={handleFieldChange}
                 />
+                {formData.username && !validity.username && (
+                    <span style={{ color: 'red' }}>
+                        Invalid username(at least 4 characters:A-Z,a-z,0-9)
+                    </span>
+                )}
                 <br />
                 <label>Email</label>
                 <input
@@ -87,6 +93,9 @@ const DayFour = () => {
                     value={formData.email}
                     onChange={handleFieldChange}
                 />
+                {formData.email && !validity.email && (
+                    <span style={{ color: 'red' }}>Invalid email</span>
+                )}
                 <br />
                 <label>Gender</label>
                 <select name="gender" onChange={handleFieldChange}>
@@ -101,6 +110,11 @@ const DayFour = () => {
                     value={formData.password}
                     onChange={handleFieldChange}
                 />
+                {formData.password && !validity.password && (
+                    <span style={{ color: 'red' }}>
+                        Invalid password(at least 8 characters)
+                    </span>
+                )}
                 <br />
                 <label>Re-enter password</label>
                 <input
@@ -109,6 +123,9 @@ const DayFour = () => {
                     value={formData.rePassword}
                     onChange={handleFieldChange}
                 />
+                {formData.repassword && !validity.repassword && (
+                    <span style={{ color: 'red' }}>Password not matched</span>
+                )}
                 <br />
                 <input
                     name="checkbox"
@@ -120,6 +137,11 @@ const DayFour = () => {
                     }
                 />
                 I have read the agreement
+                {formData.checkbox !== undefined && !validity.checkbox && (
+                    <span style={{ color: 'red' }}>
+                        You must agree the agreement
+                    </span>
+                )}
                 <br />
                 <button type="button" disabled={!activeSubmit}>
                     Submit
