@@ -3,47 +3,26 @@ import { Container } from 'react-bootstrap'
 
 const DayFour = () => {
     const [formData, setFormData] = useState({ gender: 'male' })
-    const [validity, setValidity] = useState({})
+    const [validity, setValidity] = useState({
+        username: false,
+        email: false,
+        password: false,
+        repassword: false,
+        checkbox: false,
+    })
     const [activeSubmit, setActiveSubmit] = useState(false)
 
-    const handleUsernameChange = (e) => {
+    const handleFieldChange = (e) => {
         setFormData((prev) => {
-            return { ...prev, username: e.target.value }
+            return { ...prev, [e.target.name]: e.target.value }
         })
     }
 
-    const handleEmailChange = (e) => {
-        setFormData((prev) => {
-            return { ...prev, email: e.target.value }
-        })
-    }
-
-    const handlePasswordChange = (e) => {
-        setFormData((prev) => {
-            return { ...prev, password: e.target.value }
-        })
-    }
-
-    const handleRePasswordChange = (e) => {
-        setFormData((prev) => {
-            return { ...prev, rePassword: e.target.value }
-        })
-    }
-
-    const handleGenderChange = (e) => {
-        setFormData((prev) => {
-            return { ...prev, gender: e.target.value }
-        })
-    }
-
-    const handleCheckBoxChange = (e) => {
-        setFormData((prev) => {
-            return { ...prev, checkbox: e.target.checked }
-        })
-    }
+    console.log(formData)
+    console.log(validity)
 
     useEffect(() => {
-        if (/^[A-Za-z0-9]{4,}$/.test(formData.username))
+        if (formData.username && /^[A-Za-z0-9]{4,}$/.test(formData.username))
             setValidity((prev) => {
                 return { ...prev, username: true }
             })
@@ -52,7 +31,7 @@ const DayFour = () => {
                 return { ...prev, username: false }
             })
 
-        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+        if (formData.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
             setValidity((prev) => {
                 return { ...prev, email: true }
             })
@@ -61,7 +40,7 @@ const DayFour = () => {
                 return { ...prev, email: false }
             })
 
-        if (/^.{8,}$/.test(formData.password))
+        if (formData.password && /^.{8,}$/.test(formData.password))
             setValidity((prev) => {
                 return { ...prev, password: true }
             })
@@ -70,13 +49,13 @@ const DayFour = () => {
                 return { ...prev, password: false }
             })
 
-        if (formData.rePassword === formData.password)
+        if (formData.repassword && formData.repassword === formData.password)
             setValidity((prev) => {
-                return { ...prev, rePassword: true }
+                return { ...prev, repassword: true }
             })
         else
             setValidity((prev) => {
-                return { ...prev, rePassword: false }
+                return { ...prev, repassword: false }
             })
 
         setValidity((prev) => {
@@ -96,19 +75,21 @@ const DayFour = () => {
                 <label>Username</label>
                 <input
                     type="text"
+                    name="username"
                     value={formData.username}
-                    onChange={handleUsernameChange}
+                    onChange={handleFieldChange}
                 />
                 <br />
                 <label>Email</label>
                 <input
                     type="email"
+                    name="email"
                     value={formData.email}
-                    onChange={handleEmailChange}
+                    onChange={handleFieldChange}
                 />
                 <br />
                 <label>Gender</label>
-                <select onChange={handleGenderChange}>
+                <select name="gender" onChange={handleFieldChange}>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                 </select>
@@ -116,18 +97,28 @@ const DayFour = () => {
                 <label>Password</label>
                 <input
                     type="text"
+                    name="password"
                     value={formData.password}
-                    onChange={handlePasswordChange}
+                    onChange={handleFieldChange}
                 />
                 <br />
                 <label>Re-enter password</label>
                 <input
                     type="text"
+                    name="repassword"
                     value={formData.rePassword}
-                    onChange={handleRePasswordChange}
+                    onChange={handleFieldChange}
                 />
                 <br />
-                <input type="checkbox" onChange={handleCheckBoxChange} />
+                <input
+                    name="checkbox"
+                    type="checkbox"
+                    onChange={(e) =>
+                        setFormData((prev) => {
+                            return { ...prev, checkbox: e.target.checked }
+                        })
+                    }
+                />
                 I have read the agreement
                 <br />
                 <button type="button" disabled={!activeSubmit}>
